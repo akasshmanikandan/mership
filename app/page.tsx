@@ -220,8 +220,8 @@ function QuoteModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 {loading ? (
                   <>
                     <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                     </svg>
                     Sending…
                   </>
@@ -535,7 +535,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-bold mb-4 text-amber-400 tracking-wide">Mr. RAAJEYSH K C</h3>
                 <div className="space-y-3 text-gray-300 text-sm">
-                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9740789343</p>
+                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9840789343</p>
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16">Email:</span>
                     <div className="flex flex-col space-y-1">
