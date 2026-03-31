@@ -367,7 +367,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-[#1c2539] mb-4">Customs Clearance</h3>
               <p className="text-gray-600 text-sm flex-grow mb-8 leading-relaxed">End-to-end clearance with legal advisory and full documentation.</p>
               <Link href="#" className="text-[#3f679e] text-sm font-semibold flex items-center gap-1 hover:text-amber-500 transition-colors">
-                Learn more <ArrowRight className="w-3 h-3" />
+
               </Link>
             </div>
 
@@ -377,7 +377,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-[#1c2539] mb-4">Air Freight</h3>
               <p className="text-gray-600 text-sm flex-grow mb-8 leading-relaxed">Export & import air freight forwarding with charter options.</p>
               <Link href="#" className="text-[#3f679e] text-sm font-semibold flex items-center gap-1 hover:text-amber-500 transition-colors">
-                Learn more <ArrowRight className="w-3 h-3" />
+
               </Link>
             </div>
 
@@ -387,7 +387,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-[#1c2539] mb-4">Ocean Freight</h3>
               <p className="text-gray-600 text-sm flex-grow mb-8 leading-relaxed">FCL/LCL ocean forwarding for export & import worldwide.</p>
               <Link href="#" className="text-[#3f679e] text-sm font-semibold flex items-center gap-1 hover:text-amber-500 transition-colors">
-                Learn more <ArrowRight className="w-3 h-3" />
+
               </Link>
             </div>
 
@@ -397,7 +397,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-[#1c2539] mb-4">Custom Advisory</h3>
               <p className="text-gray-600 text-sm flex-grow mb-8 leading-relaxed">Notifications, circulars, and compliance/regulatory updates.</p>
               <Link href="#" className="text-[#3f679e] text-sm font-semibold flex items-center gap-1 hover:text-amber-500 transition-colors">
-                Learn more <ArrowRight className="w-3 h-3" />
+
               </Link>
             </div>
           </div>
@@ -535,7 +535,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-bold mb-4 text-amber-400 tracking-wide">Mr. RAAJEYSH K C</h3>
                 <div className="space-y-3 text-gray-300 text-sm">
-                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9840789343</p>
+                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9740789343</p>
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16">Email:</span>
                     <div className="flex flex-col space-y-1">
