@@ -581,7 +581,7 @@ export default function Home() {
             {/* Google Map Image */}
             <a href="https://www.google.com/maps/dir/?api=1&destination=269%2F1+JSJ+Complex,+Thambu+Chetty+St,+Chennai+600001" target="_blank" rel="noopener noreferrer" className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
               <Image
-                src="/office_location_map.png"
+                src="/modern_office_map.png"
                 alt="Office Location Map Chennai"
                 fill
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"
