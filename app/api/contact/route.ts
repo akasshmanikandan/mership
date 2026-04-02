@@ -34,17 +34,17 @@ export async function POST(req: Request) {
         <p>${message}</p>
       `,
     };
-    
+
     // Auto-reply Email to Customer
     const autoReplyOptions = {
       from: process.env.EMAIL_USER,
       to: email, // Send back to the customer
-      subject: `Thank you for contacting Mercury Shipping & Logistics`,
+      subject: `Thank you for contacting Mercury Shipping And Logistics Services`,
       text: `Dear ${name},\n\nThank you for requesting a quote. We have received your query and our team will get back to you within 24 hours.\n\nBest Regards,\nMercury Shipping & Logistics`,
       html: `
         <p>Dear ${name},</p>
         <p>Thank you for requesting a quote. We have received your query and our team will get back to you within 24 hours.</p>
-        <p>Best Regards,<br><strong>Mercury Shipping & Logistics</strong></p>
+        <p>Best Regards,<br><strong>MERCURY SHIPPING AND LOGISTICS SERVICES</strong></p>
       `
     };
 
