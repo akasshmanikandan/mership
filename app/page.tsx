@@ -535,7 +535,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-bold mb-4 text-amber-400 tracking-wide">Mr. RAAJEYSH K C</h3>
                 <div className="space-y-3 text-gray-300 text-sm">
-                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9740789343</p>
+                  <p><span className="text-gray-400 inline-block w-16">Phone:</span> 9840019341 / 9840789343</p>
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16">Email:</span>
                     <div className="flex flex-col space-y-1">
@@ -570,7 +570,7 @@ export default function Home() {
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16 mt-1"><MapPin className="w-4 h-4" /></span>
                     <span className="leading-relaxed">
-                      No. 269/1 JSJ Complex, 61 2nd Fl,<br />
+                      No. 269/1 JSJ Complex, B1, 2nd Fl,<br />
                       Thambu Chetty St, Chennai 600 001
                     </span>
                   </div>
@@ -579,7 +579,7 @@ export default function Home() {
             </div>
 
             {/* Google Map Image */}
-            <a href="https://www.google.com/maps/dir/?api=1&destination=269%2F1+JSJ+Complex,+61+Thambu+Chetty+St,+Chennai+600001" target="_blank" rel="noopener noreferrer" className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=269%2F1+JSJ+Complex,+Thambu+Chetty+St,+Chennai+600001" target="_blank" rel="noopener noreferrer" className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
               <Image
                 src="/office_location_map.png"
                 alt="Office Location Map Chennai"
