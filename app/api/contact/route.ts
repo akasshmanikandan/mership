@@ -6,65 +6,106 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, email, phone, service, message } = body;
 
-    // Set up nodemailer transporter
-    const transporter = nodemailer.createTransport({
+    // 1. Gmail Transporter - For sending quote notification to the company
+    const gmailTransporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // Needs an App Password if using Gmail
+        user: process.env.GMAIL_USER || process.env.EMAIL_USER,
+        pass: process.env.GMAIL_PASS || process.env.EMAIL_PASS,
       },
     });
 
-    // Email to Mership
+    // 2. Hostinger Transporter - For sending automatic reply to the customer from sales@mership.com
+    const hostingerTransporter = nodemailer.createTransport({
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: process.env.SALES_EMAIL_USER, // e.g., sales@mership.com
+        pass: process.env.SALES_EMAIL_PASS,
+      },
+    });
+
+    // Email to Mership Team (via Gmail)
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: "mershiplog@gmail.com", // Send to Mership team
+      from: process.env.GMAIL_USER || process.env.EMAIL_USER,
+      to: "mershiplog@gmail.com",
       replyTo: email,
       subject: `New Quote Request from ${name}`,
       text: `New Quote Request Details:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nService Required: ${service}\n\nMessage:\n${message}`,
       html: `
-        <h3>New Quote Request Details:</h3>
-        <ul>
-          <li><strong>Name:</strong> ${name}</li>
-          <li><strong>Email:</strong> ${email}</li>
-          <li><strong>Phone:</strong> ${phone}</li>
-          <li><strong>Service Required:</strong> ${service}</li>
-        </ul>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+          <h2 style="color: #1c2539; border-bottom: 2px solid #fbbf24; padding-bottom: 10px;">New Quote Request</h2>
+          <p>You have received a new inquiry from the website:</p>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 8px 0; font-weight: bold; width: 150px;">Name:</td><td>${name}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Email:</td><td>${email}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td>${phone}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Service:</td><td>${service}</td></tr>
+          </table>
+          <div style="margin-top: 20px; padding: 15px; bg-color: #f9f9f9; border-radius: 5px;">
+            <h4 style="margin-top: 0;">Message:</h4>
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
+        </div>
       `,
     };
 
-    // Auto-reply Email to Customer
+    // Auto-reply Email to Customer (via Hostinger)
     const autoReplyOptions = {
-      from: process.env.EMAIL_USER,
-      to: email, // Send back to the customer
-      subject: `Thank you for contacting Mercury Shipping And Logistics Services`,
-      text: `Dear ${name},\n\nThank you for requesting a quote. We have received your query and our team will get back to you within 24 hours.\n\nBest Regards,\nMercury Shipping & Logistics`,
+      from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
+      to: email,
+      subject: `Quote Request Received - Mercury Shipping And Logistics`,
+      text: `Dear ${name},\n\nThank you for reaching out to Mercury Shipping and Logistics. We have received your quote request for ${service} and our team is already reviewing the details.\n\nYou can expect a detailed response from us within the next 24 hours.\n\nBest Regards,\nSales Team\nMercury Shipping & Logistics Services`,
       html: `
-        <p>Dear ${name},</p>
-        <p>Thank you for requesting a quote. We have received your query and our team will get back to you within 24 hours.</p>
-        <p>Best Regards,<br><strong>MERCURY SHIPPING AND LOGISTICS SERVICES</strong></p>
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+          <p>Dear <strong>${name}</strong>,</p>
+          <p>Thank you for reaching out to <strong>Mercury Shipping and Logistics Services</strong>.</p>
+          <p>We have received your quote request for <strong>${service}</strong> and our team is already reviewing the details.</p>
+          <p>You can expect a detailed response from us within the next <strong>24 hours</strong>.</p>
+          <br/>
+          <p>Best Regards,</p>
+          <p><strong>Sales Team</strong><br>Mercury Shipping & Logistics Services</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="font-size: 12px; color: #666;">
+            This is an automated response. Please do not reply directly to this email if you have urgent queries; instead, contact us at +91 9840019341.
+          </p>
+        </div>
       `
     };
 
-    if (process.env.EMAIL_PASS) {
-      // Send the actual emails
-      await transporter.sendMail(mailOptions);
-      await transporter.sendMail(autoReplyOptions);
+    // Send emails concurrently for efficiency
+    const emailPromises = [];
+
+    // Only attempt to send if credentials are provided
+    if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
+      emailPromises.push(gmailTransporter.sendMail(mailOptions));
     } else {
-      console.log('Environment variables EMAIL_USER and EMAIL_PASS not set. Simulating email send:', mailOptions);
+      console.warn("Gmail credentials missing. Skipping notification to team.");
+    }
+
+    if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
+      emailPromises.push(hostingerTransporter.sendMail(autoReplyOptions));
+    } else {
+      console.warn("Hostinger credentials missing. Skipping auto-reply to customer.");
+    }
+
+    if (emailPromises.length > 0) {
+      await Promise.all(emailPromises);
+    } else {
+      console.log("No email credentials configured. Simulating success in development.");
     }
 
     return NextResponse.json(
-      { success: true, message: "Emails processed successfully." },
+      { success: true, message: "Request processed successfully." },
       { status: 200 }
     );
   } catch (error: any) {
     console.error("API Error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to send email", error: error.message },
+      { success: false, message: "Failed to process request", error: error.message },
       { status: 500 }
     );
   }
 }
+
