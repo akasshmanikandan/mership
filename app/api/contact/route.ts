@@ -90,17 +90,30 @@ export async function POST(req: Request) {
       }
     }
 
-    // Send Hostinger-branded auto-reply to customer (via Gmail for better deliverability)
-    if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
+    // Send Auto-reply to customer via Hostinger (so it comes FROM sales@mershiplog.com)
+    if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
       try {
-        const info = await gmailTransporter.sendMail({
+        const info = await hostingerTransporter.sendMail({
           ...autoReplyOptions,
-          from: `"Mership Sales" <sales@mershiplog.com>`, // Branded sender name with Hostinger email
-          replyTo: "sales@mershiplog.com", // Replies go to Hostinger
+          from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
         });
-        console.log("✅ Auto-reply sent to customer via Gmail gateway. ID:", info.messageId);
+        console.log("✅ Auto-reply sent to customer via Hostinger. ID:", info.messageId);
       } catch (err) {
-        console.error("❌ Auto-reply Error:", err);
+        console.error("❌ Hostinger Auto-reply Error:", err);
+        
+        // Fallback to Gmail if Hostinger fails, but it will show the gmail address
+        if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
+          console.log("⚠️ Attempting Gmail fallback for auto-reply...");
+          try {
+            await gmailTransporter.sendMail({
+              ...autoReplyOptions,
+              from: `"Mership Sales" <${process.env.GMAIL_USER}>`,
+            });
+            console.log("✅ Auto-reply sent via Gmail fallback");
+          } catch (fallbackErr) {
+            console.error("❌ Gmail Fallback Error:", fallbackErr);
+          }
+        }
       }
     }
 
