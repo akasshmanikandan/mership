@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     // Email to Mership Team (via Gmail)
     const mailOptions = {
       from: process.env.GMAIL_USER || process.env.EMAIL_USER,
-      to: "sales@mershiplog.com",
+      to: "mershiplog@gmail.com",
       replyTo: email,
       subject: `New Quote Request from ${name}`,
       text: `New Quote Request Details:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nService Required: ${service}\n\nMessage:\n${message}`,
