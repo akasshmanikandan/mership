@@ -70,7 +70,7 @@ export async function POST(req: Request) {
           <p>You can expect a detailed response from us within the next <strong>24 hours</strong>.</p>
           <br/>
           <p>Best Regards,</p>
-          <p><strong>Sales Team</strong><br>Mercury Shipping & Logistics Services</p>
+          <p><strong>Team</strong><br>Mercury Shipping & Logistics Services</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="font-size: 12px; color: #666;">
             This is an automated response. Please do not reply directly to this email if you have urgent queries; instead, contact us at +91 9840019341.
