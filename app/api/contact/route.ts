@@ -19,11 +19,15 @@ export async function POST(req: Request) {
     const hostingerTransporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
       port: 465,
-      secure: true, // true for 465, false for other ports
+      secure: true,
       auth: {
-        user: process.env.SALES_EMAIL_USER, // e.g., sales@mership.com
+        user: process.env.SALES_EMAIL_USER,
         pass: process.env.SALES_EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: false // Helps if there are local certificate issues
+      },
+      connectionTimeout: 10000, // 10 seconds
     });
 
     // Email to Mership Team (via Gmail)
