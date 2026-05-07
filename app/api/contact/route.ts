@@ -74,30 +74,29 @@ export async function POST(req: Request) {
       `
     };
 
-    // Send emails concurrently for efficiency
-    const emailPromises = [];
-
-    // Only attempt to send if credentials are provided
+    // Send Gmail notification to team
     if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
-      emailPromises.push(gmailTransporter.sendMail(mailOptions));
-    } else {
-      console.warn("Gmail credentials missing. Skipping notification to team.");
+      try {
+        await gmailTransporter.sendMail(mailOptions);
+        console.log("✅ Gmail notification sent to team");
+      } catch (err) {
+        console.error("❌ Gmail Error:", err);
+        // We don't throw here so the customer still gets their auto-reply
+      }
     }
 
+    // Send Hostinger auto-reply to customer
     if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
-      emailPromises.push(hostingerTransporter.sendMail(autoReplyOptions));
-    } else {
-      console.warn("Hostinger credentials missing. Skipping auto-reply to customer.");
-    }
-
-    if (emailPromises.length > 0) {
-      await Promise.all(emailPromises);
-    } else {
-      console.log("No email credentials configured. Simulating success in development.");
+      try {
+        await hostingerTransporter.sendMail(autoReplyOptions);
+        console.log("✅ Hostinger auto-reply sent to customer");
+      } catch (err) {
+        console.error("❌ Hostinger Error:", err);
+      }
     }
 
     return NextResponse.json(
-      { success: true, message: "Request processed successfully." },
+      { success: true, message: "Request processed." },
       { status: 200 }
     );
   } catch (error: any) {
