@@ -90,13 +90,17 @@ export async function POST(req: Request) {
       }
     }
 
-    // Send Hostinger auto-reply to customer
-    if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
+    // Send Hostinger-branded auto-reply to customer (via Gmail for better deliverability)
+    if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
       try {
-        const info = await hostingerTransporter.sendMail(autoReplyOptions);
-        console.log("✅ Hostinger auto-reply sent to customer. ID:", info.messageId);
+        const info = await gmailTransporter.sendMail({
+          ...autoReplyOptions,
+          from: `"Mership Sales" <${process.env.GMAIL_USER}>`, // Sent via Gmail
+          replyTo: "sales@mershiplog.com", // Replies go to Hostinger
+        });
+        console.log("✅ Auto-reply sent to customer via Gmail gateway. ID:", info.messageId);
       } catch (err) {
-        console.error("❌ Hostinger Error:", err);
+        console.error("❌ Auto-reply Error:", err);
       }
     }
 
