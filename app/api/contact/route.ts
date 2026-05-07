@@ -18,16 +18,18 @@ export async function POST(req: Request) {
     // 2. Hostinger Transporter - For sending automatic reply to the customer from sales@mership.com
     const hostingerTransporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false, // Use STARTTLS for port 587
       auth: {
         user: process.env.SALES_EMAIL_USER,
         pass: process.env.SALES_EMAIL_PASS,
       },
       tls: {
-        rejectUnauthorized: false // Helps if there are local certificate issues
+        rejectUnauthorized: false
       },
-      connectionTimeout: 10000, // 10 seconds
+      debug: true, // Enable debug output
+      logger: true, // Log to console
+      connectionTimeout: 15000, // 15 seconds
     });
 
     // Email to Mership Team (via Gmail)
@@ -98,8 +100,10 @@ export async function POST(req: Request) {
           from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
         });
         console.log("✅ Auto-reply sent to customer via Hostinger. ID:", info.messageId);
-      } catch (err) {
-        console.error("❌ Hostinger Auto-reply Error:", err);
+      } catch (err: any) {
+        console.error("❌ Hostinger SMTP Error Details:", err.message);
+        if (err.code === 'EAUTH') console.error("   -> Authentication failed. Check SALES_EMAIL_USER and SALES_EMAIL_PASS in .env.local");
+        if (err.code === 'ECONNREFUSED') console.error("   -> Connection refused. Port 587 might be blocked.");
         
         // Fallback to Gmail if Hostinger fails, but it will show the gmail address
         if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
