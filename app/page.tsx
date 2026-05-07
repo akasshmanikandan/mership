@@ -98,7 +98,7 @@ function QuoteModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         {/* Header */}
         <div className="bg-gradient-to-r from-amber-400 to-amber-500 px-8 py-6 flex items-center justify-between">
           <div>
-            <div className="text-[#1c2539] text-xs font-bold uppercase tracking-widest mb-1">Mercury Shipping &amp; Logistics</div>
+            <div className="text-[#1c2539] text-[10px] font-bold uppercase tracking-widest mb-1">Mercury Shipping &amp; Logistics Services</div>
             <h2 className="text-[#1c2539] text-2xl font-extrabold">Get a Quote</h2>
           </div>
           <button
@@ -256,8 +256,13 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       {/* Navigation */}
       <header className="bg-[#172033] text-white py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50 shadow-md">
-        <div className="flex items-center space-x-2">
-          <span className="font-bold text-lg tracking-wider text-white">MERCURY <span className="text-gray-400 font-normal hidden sm:inline">SHIPPING & LOGISTICS</span></span>
+        <div className="flex items-center">
+          <Link href="/" className="flex flex-col md:flex-row md:items-baseline">
+            <span className="font-bold text-lg md:text-xl tracking-wider text-white">MERCURY</span>
+            <span className="text-gray-400 font-normal text-[10px] md:text-sm md:ml-2 uppercase tracking-tight md:tracking-wider">
+              Shipping & Logistics Services
+            </span>
+          </Link>
         </div>
 
         {/* Desktop Nav */}
