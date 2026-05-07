@@ -57,8 +57,9 @@ export async function POST(req: Request) {
 
     // Auto-reply Email to Customer (via Hostinger)
     const autoReplyOptions = {
-      from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
+      from: process.env.SALES_EMAIL_USER, // Simplified From address
       to: email,
+      replyTo: process.env.SALES_EMAIL_USER,
       subject: `Quote Request Received - Mercury Shipping And Logistics`,
       text: `Dear ${name},\n\nThank you for reaching out to Mercury Shipping and Logistics. We have received your quote request for ${service} and our team is already reviewing the details.\n\nYou can expect a detailed response from us within the next 24 hours.\n\nBest Regards,\nSales Team\nMercury Shipping & Logistics Services`,
       html: `
