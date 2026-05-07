@@ -233,7 +233,7 @@ function QuoteModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               </button>
 
               <p className="text-center text-gray-500 text-xs">
-                We typically respond within 24 hours · mershiplog@gmail.com
+                We typically respond within 24 hours · sales@mershiplog.com
               </p>
             </form>
           )}
@@ -546,7 +546,7 @@ export default function Home() {
                     <div className="flex flex-col space-y-1">
                       <a href="mailto:rajesh3393@gmail.com" className="hover:text-amber-400 transition-colors">rajesh3393@gmail.com</a>
                       <a href="mailto:raajeyshkc@gmail.com" className="hover:text-amber-400 transition-colors">raajeyshkc@gmail.com</a>
-                      <a href="mailto:mershiplog@gmail.com" className="hover:text-amber-400 transition-colors">mershiplog@gmail.com</a>
+                      <a href="mailto:sales@mershiplog.com" className="hover:text-amber-400 transition-colors">sales@mershiplog.com</a>
                     </div>
                   </div>
                 </div>
@@ -560,7 +560,7 @@ export default function Home() {
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16">Email:</span>
                     <div className="flex flex-col space-y-1">
-                      <a href="mailto:mershiplog@gmail.com" className="hover:text-amber-400 transition-colors">mershiplog@gmail.com</a>
+                      <a href="mailto:sales@mershiplog.com" className="hover:text-amber-400 transition-colors">sales@mershiplog.com</a>
                       <a href="mailto:shoba570@gmail.com" className="hover:text-amber-400 transition-colors">shoba570@gmail.com</a>
                     </div>
                   </div>
