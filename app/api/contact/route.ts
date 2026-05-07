@@ -93,8 +93,8 @@ export async function POST(req: Request) {
     // Send Hostinger auto-reply to customer
     if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
       try {
-        await hostingerTransporter.sendMail(autoReplyOptions);
-        console.log("✅ Hostinger auto-reply sent to customer");
+        const info = await hostingerTransporter.sendMail(autoReplyOptions);
+        console.log("✅ Hostinger auto-reply sent to customer. ID:", info.messageId);
       } catch (err) {
         console.error("❌ Hostinger Error:", err);
       }
