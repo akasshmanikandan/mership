@@ -1,44 +1,20 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { name, email, phone, service, message } = body;
 
-    // 1. Gmail Transporter - For sending quote notification to the company
-    const gmailTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER || process.env.EMAIL_USER,
-        pass: process.env.GMAIL_PASS || process.env.EMAIL_PASS,
-      },
-    });
-
-    // 2. Hostinger Transporter - For sending automatic reply to the customer from sales@mership.com
-    const hostingerTransporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 587,
-      secure: false, // Use STARTTLS for port 587
-      auth: {
-        user: process.env.SALES_EMAIL_USER,
-        pass: process.env.SALES_EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false
-      },
-      debug: true, // Enable debug output
-      logger: true, // Log to console
-      connectionTimeout: 15000, // 15 seconds
-    });
-
-    // Email to Mership Team (via Gmail)
-    const mailOptions = {
-      from: process.env.GMAIL_USER || process.env.EMAIL_USER,
-      to: "mershiplog@gmail.com",
+    // 1. Send notification to the company (Mership Team)
+    // Using Resend to send to the internal team email
+    const { data: teamData, error: teamError } = await resend.emails.send({
+      from: "Mership <sales@mershiplog.com>",
+      to: ["mershiplog@gmail.com"],
       replyTo: email,
       subject: `New Quote Request from ${name}`,
-      text: `New Quote Request Details:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nService Required: ${service}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
           <h2 style="color: #1c2539; border-bottom: 2px solid #fbbf24; padding-bottom: 10px;">New Quote Request</h2>
@@ -49,21 +25,26 @@ export async function POST(req: Request) {
             <tr><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td>${phone}</td></tr>
             <tr><td style="padding: 8px 0; font-weight: bold;">Service:</td><td>${service}</td></tr>
           </table>
-          <div style="margin-top: 20px; padding: 15px; bg-color: #f9f9f9; border-radius: 5px;">
+          <div style="margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
             <h4 style="margin-top: 0;">Message:</h4>
             <p style="white-space: pre-wrap;">${message}</p>
           </div>
         </div>
       `,
-    };
+    });
 
-    // Auto-reply Email to Customer (via Hostinger)
-    const autoReplyOptions = {
-      from: process.env.SALES_EMAIL_USER, // Simplified From address
-      to: email,
-      replyTo: process.env.SALES_EMAIL_USER,
+    if (teamError) {
+      console.error("❌ Resend Team Notification Error:", teamError);
+    } else {
+      console.log("✅ Team notification sent via Resend:", teamData?.id);
+    }
+
+    // 2. Send auto-reply to the customer
+    const { data: customerData, error: customerError } = await resend.emails.send({
+      from: "Mership Sales <sales@mershiplog.com>",
+      to: [email],
+      replyTo: "mershiplog@gmail.com",
       subject: `Quote Request Received - Mercury Shipping And Logistics`,
-      text: `Dear ${name},\n\nThank you for reaching out to Mercury Shipping and Logistics. We have received your quote request for ${service} and our team is already reviewing the details.\n\nYou can expect a detailed response from us within the next 24 hours.\n\nBest Regards,\nSales Team\nMercury Shipping & Logistics Services`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
           <p>Dear <strong>${name}</strong>,</p>
@@ -78,47 +59,13 @@ export async function POST(req: Request) {
             This is an automated response. Please do not reply directly to this email if you have urgent queries; instead, contact us at +91 9840019341.
           </p>
         </div>
-      `
-    };
+      `,
+    });
 
-    // Send Gmail notification to team
-    if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
-      try {
-        await gmailTransporter.sendMail(mailOptions);
-        console.log("✅ Gmail notification sent to team");
-      } catch (err) {
-        console.error("❌ Gmail Error:", err);
-        // We don't throw here so the customer still gets their auto-reply
-      }
-    }
-
-    // Send Auto-reply to customer via Hostinger (so it comes FROM sales@mershiplog.com)
-    if (process.env.SALES_EMAIL_USER && process.env.SALES_EMAIL_PASS) {
-      try {
-        const info = await hostingerTransporter.sendMail({
-          ...autoReplyOptions,
-          from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
-        });
-        console.log("✅ Auto-reply sent to customer via Hostinger. ID:", info.messageId);
-      } catch (err: any) {
-        console.error("❌ Hostinger SMTP Error Details:", err.message);
-        if (err.code === 'EAUTH') console.error("   -> Authentication failed. Check SALES_EMAIL_USER and SALES_EMAIL_PASS in .env.local");
-        if (err.code === 'ECONNREFUSED') console.error("   -> Connection refused. Port 587 might be blocked.");
-        
-        // Fallback to Gmail if Hostinger fails, but it will show the gmail address
-        if ((process.env.GMAIL_USER || process.env.EMAIL_USER) && (process.env.GMAIL_PASS || process.env.EMAIL_PASS)) {
-          console.log("⚠️ Attempting Gmail fallback for auto-reply...");
-          try {
-            await gmailTransporter.sendMail({
-              ...autoReplyOptions,
-              from: `"Mership Sales" <${process.env.GMAIL_USER}>`,
-            });
-            console.log("✅ Auto-reply sent via Gmail fallback");
-          } catch (fallbackErr) {
-            console.error("❌ Gmail Fallback Error:", fallbackErr);
-          }
-        }
-      }
+    if (customerError) {
+      console.error("❌ Resend Auto-reply Error:", customerError);
+    } else {
+      console.log("✅ Auto-reply sent via Resend:", customerData?.id);
     }
 
     return NextResponse.json(
@@ -133,4 +80,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
