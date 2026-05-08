@@ -1,19 +1,38 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-// Vercel Build Trigger: Resend Integration
-
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const body = await req.json();
     const { name, email, phone, service, message } = body;
 
-    // 1. Send notification to the company (Mership Team)
-    // Using Resend to send to the internal team email
-    const { data: teamData, error: teamError } = await resend.emails.send({
-      from: "Mership <sales@mershiplog.com>",
-      to: ["mershiplog@gmail.com"],
+    // 1. Gmail Transporter - For sending quote notification to the company
+    const gmailTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    // 2. Hostinger Transporter - For sending automatic reply to the customer
+    const hostingerTransporter = nodemailer.createTransport({
+      host: "smtp.hostinger.com",
+      port: 587,
+      secure: false, // Use STARTTLS for port 587
+      auth: {
+        user: process.env.SALES_EMAIL_USER,
+        pass: process.env.SALES_EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+    });
+
+    // Email to Mership Team (via Gmail)
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: "mershiplog@gmail.com",
       replyTo: email,
       subject: `New Quote Request from ${name}`,
       html: `
@@ -32,18 +51,12 @@ export async function POST(req: Request) {
           </div>
         </div>
       `,
-    });
+    };
 
-    if (teamError) {
-      console.error("❌ Resend Team Notification Error:", teamError);
-    } else {
-      console.log("✅ Team notification sent via Resend:", teamData?.id);
-    }
-
-    // 2. Send auto-reply to the customer
-    const { data: customerData, error: customerError } = await resend.emails.send({
-      from: "Mership Sales <sales@mershiplog.com>",
-      to: [email],
+    // Auto-reply Email to Customer (via Hostinger)
+    const autoReplyOptions = {
+      from: `"Mership Sales" <${process.env.SALES_EMAIL_USER}>`,
+      to: email,
       replyTo: "mershiplog@gmail.com",
       subject: `Quote Request Received - Mercury Shipping And Logistics`,
       html: `
@@ -60,14 +73,14 @@ export async function POST(req: Request) {
             This is an automated response. Please do not reply directly to this email if you have urgent queries; instead, contact us at +91 9840019341.
           </p>
         </div>
-      `,
-    });
+      `
+    };
 
-    if (customerError) {
-      console.error("❌ Resend Auto-reply Error:", customerError);
-    } else {
-      console.log("✅ Auto-reply sent via Resend:", customerData?.id);
-    }
+    // Send both emails
+    await Promise.all([
+      gmailTransporter.sendMail(mailOptions),
+      hostingerTransporter.sendMail(autoReplyOptions)
+    ]);
 
     return NextResponse.json(
       { success: true, message: "Request processed." },
