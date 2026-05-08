@@ -3,7 +3,7 @@ import { Resend } from "resend";
 
 export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
-  
+
   try {
     const body = await req.json();
     const { name, email, phone, service, message } = body;
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       from: "Mership Sales <sales@mershiplog.com>",
       to: [email],
       replyTo: "mershiplog@gmail.com",
-      subject: `Quote Request Received - Mercury Shipping And Logistics`,
+      subject: `Quote Request Received - Mercury Shipping And Logistics Services`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
           <p>Dear <strong>${name}</strong>,</p>
