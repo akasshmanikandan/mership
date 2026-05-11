@@ -584,18 +584,26 @@ export default function Home() {
             </div>
 
             {/* Google Map Image */}
-            <a href="https://www.google.com/maps/dir/?api=1&destination=269%2F1+JSJ+Complex,+Thambu+Chetty+St,+Chennai+600001" target="_blank" rel="noopener noreferrer" className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
-              <Image
-                src="/modern_office_map.png"
-                alt="Office Location Map Chennai"
-                fill
-                className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-[#1c2539]/10 group-hover:bg-transparent transition-colors duration-500"></div>
-              <div className="absolute top-4 right-4 bg-amber-400 text-[#1c2539] px-4 py-2 rounded font-bold text-sm shadow-lg group-hover:bg-amber-500 transition-colors">
+            <div className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
+              <iframe
+                src="https://maps.google.com/maps?q=219,%20Thambu%20Chetty%20St,%20Muthialpet,%20George%20Town,%20Chennai,%20Tamil%20Nadu%20600001&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: "400px" }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Office Location Map"
+              ></iframe>
+              <a 
+                href="https://www.google.com/maps/dir/?api=1&destination=219,+Thambu+Chetty+St,+Muthialpet,+George+Town,+Chennai,+Tamil+Nadu+600001" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="absolute top-4 right-4 bg-amber-400 text-[#1c2539] px-4 py-2 rounded font-bold text-sm shadow-lg hover:bg-amber-500 transition-colors z-10"
+              >
                 Visit Us
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
         </div>
       </section>
