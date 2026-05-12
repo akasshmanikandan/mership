@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mercury Shipping & Logistics",
+  title: "Mercury Shipping & Logistics Services",
   description: "Global freight forwarding, customs clearance, and multimodal logistics delivered with precision.",
 };
 
