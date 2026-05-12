@@ -13,8 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mercury Shipping & Logistics Services",
-  description: "Global freight forwarding, customs clearance, and multimodal logistics delivered with precision.",
+  title: {
+    default: "Mercury Shipping & Logistics Services | Global Freight Forwarding",
+    template: "%s | Mercury Shipping & Logistics"
+  },
+  description: "Chennai-based global freight forwarding, customs clearance, and multimodal logistics delivered with precision. CHA LIC NO: R230.",
+  keywords: ["shipping", "logistics", "chennai", "freight forwarding", "customs clearance", "mercury shipping"],
+  openGraph: {
+    title: "Mercury Shipping & Logistics Services",
+    description: "Global freight forwarding and customs clearance experts in Chennai.",
+    type: "website",
+    url: "https://mershiplog.com",
+    siteName: "Mercury Shipping & Logistics",
+  },
 };
 
 export default function RootLayout({
