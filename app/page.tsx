@@ -626,7 +626,7 @@ export default function Home() {
           <p className="text-gray-500 text-xs flex items-center gap-2">
             Need a modern, high-converting website for your business? 
             <a 
-              href="mailto:contact@yourdomain.com" 
+              href="mailto:troyflex26@gmail.com" 
               className="text-amber-500 hover:text-amber-400 font-semibold transition-colors flex items-center gap-1 border-b border-transparent hover:border-amber-400 pb-0.5"
             >
               Get in touch with the Developer <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
