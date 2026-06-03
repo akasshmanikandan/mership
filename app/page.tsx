@@ -560,7 +560,7 @@ export default function Home() {
                   <div className="flex items-start">
                     <span className="text-gray-400 inline-block w-16">Email:</span>
                     <div className="flex flex-col space-y-1">
-                      <a href="mailto:sales@mershiplog.com" className="hover:text-amber-400 transition-colors">sales@mershiplog.com</a>
+                      <a href="mailto:accounts@mershiplog.com" className="hover:text-amber-400 transition-colors">accounts@mershiplog.com</a>
                       <a href="mailto:shoba570@gmail.com" className="hover:text-amber-400 transition-colors">shoba570@gmail.com</a>
                     </div>
                   </div>
@@ -609,14 +609,29 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#101726] text-gray-400 py-6 text-xs border-t border-white/5 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-          <div>© 2025 Mercury Shipping & Logistics Services. CHA LIC NO: R230. All rights reserved.</div>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-white transition-colors">Sitemap</Link>
+      <footer className="bg-[#101726] border-t border-white/5">
+        <div className="py-6 px-6 text-gray-400 text-xs">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mercury Shipping & Logistics Services. CHA LIC NO: R230. All rights reserved.</div>
+            <div className="flex space-x-4 mt-4 md:mt-0">
+              <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="#" className="hover:text-white transition-colors">Terms</Link>
+              <Link href="#" className="hover:text-white transition-colors">Sitemap</Link>
+            </div>
           </div>
+        </div>
+        
+        {/* Personal Branding / Lead Gen */}
+        <div className="bg-[#0b0f19] border-t border-white/5 py-4 px-6 flex justify-center items-center group transition-colors hover:bg-black/40">
+          <p className="text-gray-500 text-xs flex items-center gap-2">
+            Need a modern, high-converting website for your business? 
+            <a 
+              href="mailto:contact@yourdomain.com" 
+              className="text-amber-500 hover:text-amber-400 font-semibold transition-colors flex items-center gap-1 border-b border-transparent hover:border-amber-400 pb-0.5"
+            >
+              Get in touch with the Developer <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </p>
         </div>
       </footer>
 
