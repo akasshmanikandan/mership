@@ -13,6 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.mershiplog.com'),
+  alternates: {
+    canonical: '/',
+  },
   title: {
     default: "Mercury Shipping & Logistics Services | Global Freight Forwarding",
     template: "%s | Mercury Shipping & Logistics"
@@ -23,7 +27,7 @@ export const metadata: Metadata = {
     title: "Mercury Shipping & Logistics Services",
     description: "Global freight forwarding and customs clearance experts in Chennai.",
     type: "website",
-    url: "https://mershiplog.com",
+    url: "https://www.mershiplog.com",
     siteName: "Mercury Shipping & Logistics",
   },
 };
