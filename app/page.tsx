@@ -611,13 +611,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#101726] border-t border-white/5">
         <div className="py-6 px-6 text-gray-400 text-xs">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+          <div className="max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
             <div>© 2025 Mercury Shipping & Logistics Services. CHA LIC NO: R230. All rights reserved.</div>
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-              <Link href="#" className="hover:text-white transition-colors">Sitemap</Link>
-            </div>
           </div>
         </div>
         
