@@ -586,7 +586,7 @@ export default function Home() {
             {/* Google Map Image */}
             <div className="relative block w-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl group border border-white/10">
               <iframe
-                src="https://maps.google.com/maps?q=219,%20Thambu%20Chetty%20St,%20Muthialpet,%20George%20Town,%20Chennai,%20Tamil%20Nadu%20600001&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=13.0986493,80.2898327&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: "400px" }}
@@ -596,7 +596,7 @@ export default function Home() {
                 title="Office Location Map"
               ></iframe>
               <a 
-                href="https://www.google.com/maps/dir/?api=1&destination=219,+Thambu+Chetty+St,+Muthialpet,+George+Town,+Chennai,+Tamil+Nadu+600001" 
+                href="https://maps.app.goo.gl/WcmXGTsWWGNvfWUi8" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="absolute top-4 right-4 bg-amber-400 text-[#1c2539] px-4 py-2 rounded font-bold text-sm shadow-lg hover:bg-amber-500 transition-colors z-10"
