@@ -1,13 +1,39 @@
-import { MetadataRoute } from 'next'
- 
+import { MetadataRoute } from "next";
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://www.mershiplog.com";
+  const lastModified = new Date();
+
   return [
     {
-      url: 'https://www.mershiplog.com',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
+      url: baseUrl,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 1.0,
     },
-    // Add more URLs as the site grows
-  ]
+    {
+      url: `${baseUrl}/services`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/ports`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+  ];
 }
